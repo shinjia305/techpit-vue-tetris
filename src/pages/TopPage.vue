@@ -1,26 +1,23 @@
 <script lang="ts" setup>
   import { reactive } from "vue";
+  import { useRouter } from "vue-router"; 
 
-  const state = reactive({ lastname: "", firstname: "" });
+  const state = reactive({ name: "" });
+  const router = useRouter();
+
   const startGame = () => {
-    alert(`ユーザー名: ${ state.lastname }${ state.firstname }`)
+    router.push({ name: "PlayPage", query: { name: state.name }});
   }
 </script>
 
 <template>
   <h1>トップ画面</h1>
-  <p>{{ state.lastname }}{{ state.firstname }}</p>
+  <p>{{ state.name }}</p>
   <input
-    v-model="state.lastname"
+    v-model="state.name"
     placeholder="苗字を入力してください（10文字以内）"
     maxlength="10"
-  ><br>
-  <input
-    v-model="state.firstname"
-    placeholder="名前を入力してください（10文字以内）"
-    maxlength="10"
-  >
-  <br>
+  ><br><br>
   <button v-on:click="startGame()">
     ゲームスタート！
   </button>

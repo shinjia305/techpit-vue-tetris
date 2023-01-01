@@ -15,7 +15,7 @@
   <p>{{ state.name }}</p>
   <input
     v-model="state.name"
-    placeholder="苗字を入力してください（10文字以内）"
+    placeholder="名前を入力してください（10文字以内）"
     maxlength="10"
   ><br><br>
   <button v-on:click="startGame()">

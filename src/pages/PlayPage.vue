@@ -3,6 +3,8 @@
   import { Tetromino, TETROMINO_TYPE } from '../common/Tetromino';
   import { Field } from '../common/Field';
 
+  import TetrominoPreviewComponent from '../components/TetrominoPreviewComponent.vue';
+
   let staticField = new Field();
   const tetris = reactive({
     field: new Field(),
@@ -10,6 +12,7 @@
   const tetromino = reactive({
     current: Tetromino.random(),
     position: { x: 3, y: 0 },
+    next: Tetromino.random(),
   });
 
   const classBlockColor = (_x: number, _y: number): string => {
@@ -50,7 +53,8 @@
     staticField = new Field(tetris.field.data);
     tetris.field = Field.deepCopy(staticField);
   
-    tetromino.current = Tetromino.random();
+    tetromino.current = tetromino.next;
+    tetromino.next = Tetromino.random();
     tetromino.position = { x: 3, y: 0 };
   }
 
@@ -71,16 +75,21 @@
   <h2>ユーザー名: {{ $route.query.name }}</h2>
   <h2>ユーザー名: </h2>
   <div class="container">
-    <table class="field" style="border-collapse: collapse">
-      <tr v-for="(row, y) in tetris.field.data" :key="y">
-        <td
-          class="block"
-          v-for="(col, x) in row"
-          :key="() => `${x}${y}`"
-          :class="classBlockColor(x, y)"
-        />
-      </tr>
-    </table>
+    <div class="tetris">
+      <table class="field" style="border-collapse: collapse">
+        <tr v-for="(row, y) in tetris.field.data" :key="y">
+          <td
+            class="block"
+            v-for="(col, x) in row"
+            :key="() => `${x}${y}`"
+            :class="classBlockColor(x, y)"
+          />
+        </tr>
+      </table>
+    </div>
+    <div class="information">
+      <TetrominoPreviewComponent v-bind:tetromino="tetromino.next.data"/>
+    </div>
   </div>
 </template>
 
@@ -124,4 +133,8 @@
       background: #e74c3c;
     }
   }
+
+  .information {
+   margin-left: 0.5em;
+ }
 </style>

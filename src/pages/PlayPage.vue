@@ -64,6 +64,7 @@
      case "ArrowDown":
        if(canDropCurrentTetromino()) {
          tetromino.position.y++;
+         resetDrop();
        } else {
          nextTetrisField();
        }
@@ -77,17 +78,27 @@
   onBeforeUnmount(function() {
     document.removeEventListener('keydown', onKeyDown);
   });
- 
-  setInterval(() => {
-    tetris.field = Field.deepCopy(staticField);
 
-    if(canDropCurrentTetromino()) {
-      tetromino.position.y++;
-    } else {
-      nextTetrisField();
-    }
-  }, 1 * 1000);
-  tetris.field.update(tetromino.current.data, tetromino.position);
+  const resetDropInterval = () => {
+    let intervalId = -1;
+
+    return () => {
+      if (intervalId !== -1) clearInterval(intervalId);
+
+      intervalId = setInterval(() => {
+        tetris.field = Field.deepCopy(staticField);
+
+        if(canDropCurrentTetromino()) {
+          tetromino.position.y++;
+        } else {
+          nextTetrisField();
+        }
+      }, 1 * 1000);
+    };
+  };
+
+  const resetDrop = resetDropInterval();
+  resetDrop();
 </script>
 
 <template>

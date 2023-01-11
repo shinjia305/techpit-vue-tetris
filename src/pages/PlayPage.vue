@@ -59,16 +59,24 @@
   }
 
   const onKeyDown = (e: KeyboardEvent) => {
-   switch (e.key) {
-     case "Down":
-     case "ArrowDown":
-       if(canDropCurrentTetromino()) {
-         tetromino.position.y++;
-         resetDrop();
-       } else {
-         nextTetrisField();
-       }
-       break;
+    switch (e.key) {
+      case "Down":
+      case "ArrowDown":
+        if(canDropCurrentTetromino()) {
+          tetromino.position.y++;
+          resetDrop();
+        } else {
+          nextTetrisField();
+        }
+        break;
+      case "Up":
+      case "ArrowUp":
+        while(canDropCurrentTetromino()) {
+          tetromino.position.y++;
+          resetDrop();
+        }
+        nextTetrisField();
+        break;
     }
   }
   
